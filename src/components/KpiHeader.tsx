@@ -34,7 +34,7 @@ export default function KpiHeader({ records }: Props) {
         <div className={styles.value}>{formatRatio(last.cashTotal, last.investmentTotal)}</div>
       </div>
       <div className={styles.card}>
-        <div className={styles.label}>YTD 수입 - 지출</div>
+        <div className={styles.label}>올해 순수입</div>
         <div className={styles.value}>{formatSigned(ytd)}</div>
       </div>
     </div>

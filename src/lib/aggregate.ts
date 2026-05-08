@@ -66,3 +66,12 @@ export function ytdNet(records: MonthRecord[]): number {
       return acc + s.incomeTotal - s.expenseTotal;
     }, 0);
 }
+
+export type Period = 'all' | 'thisYear' | 'last12';
+
+export function filterByPeriod(records: MonthRecord[], period: Period): MonthRecord[] {
+  if (period === 'all' || records.length === 0) return records;
+  if (period === 'last12') return records.slice(-12);
+  const lastYear = records[records.length - 1].month.slice(0, 4);
+  return records.filter((r) => r.month.startsWith(lastYear));
+}
