@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { months } from '../data/loader';
 import KpiHeader from '../components/KpiHeader';
 import AssetTimelineChart from '../components/AssetTimelineChart';
@@ -6,9 +6,23 @@ import FlowBarChart from '../components/FlowBarChart';
 import { filterByPeriod, type Period } from '../lib/aggregate';
 import styles from './DashboardPage.module.css';
 
+const STORAGE_KEY = 'dashboard.period';
+const VALID_PERIODS: Period[] = ['all', 'thisYear', 'last12'];
+
+function loadPeriod(): Period {
+  const v = localStorage.getItem(STORAGE_KEY);
+  return v !== null && (VALID_PERIODS as string[]).includes(v) ? (v as Period) : 'all';
+}
+
 export default function DashboardPage() {
-  const [period, setPeriod] = useState<Period>('all');
+  const [period, setPeriod] = useState<Period>(loadPeriod);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, period);
+  }, [period]);
+
   const filtered = filterByPeriod(months, period);
+
   return (
     <>
       <div className={styles.header}>
