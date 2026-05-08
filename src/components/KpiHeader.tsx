@@ -22,8 +22,9 @@ export default function KpiHeader({ records }: Props) {
       <div className={styles.card}>
         <div className={styles.label}>전월 대비</div>
         <div
-          className={styles.value}
-          style={{ color: mom === null ? undefined : mom >= 0 ? '#16a34a' : '#dc2626' }}
+          className={`${styles.value} ${
+            mom === null ? '' : mom >= 0 ? styles.positive : styles.negative
+          }`}
         >
           {mom === null ? '—' : formatSigned(mom)}
         </div>

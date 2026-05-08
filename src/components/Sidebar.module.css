@@ -1,23 +1,28 @@
 .sidebar {
   width: 180px;
   padding: 24px 16px;
-  border-right: 1px solid #e5e7eb;
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: #fafafa;
+  background: var(--surface-2);
 }
 .logo {
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 16px;
+  color: var(--text);
 }
 .link {
   padding: 8px 12px;
   border-radius: 6px;
-  color: #374151;
+  color: var(--text-2);
   text-decoration: none;
   font-size: 14px;
 }
-.link:hover { background: #eef2f7; }
-.active { background: #e0e7ff; color: #1e3a8a; font-weight: 600; }
+.link:hover { background: var(--link-hover); }
+.active {
+  background: var(--link-active-bg);
+  color: var(--link-active-text);
+  font-weight: 600;
+}

@@ -6,21 +6,24 @@
 }
 .card {
   padding: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface);
 }
 .label {
   font-size: 12px;
   text-transform: uppercase;
-  color: #6b7280;
+  color: var(--text-muted);
   letter-spacing: 0.05em;
   margin-bottom: 8px;
 }
 .value {
   font-size: 22px;
   font-weight: 700;
+  color: var(--text);
 }
+.positive { color: var(--positive); }
+.negative { color: var(--negative); }
 .empty {
-  color: #6b7280;
+  color: var(--text-muted);
 }

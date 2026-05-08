@@ -2,18 +2,20 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 12px;
+  color: var(--text);
 }
 .table th,
 .table td {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   padding: 12px;
   vertical-align: top;
   text-align: left;
 }
 .table th {
-  background: #f9fafb;
+  background: var(--surface-2);
   font-size: 13px;
   font-weight: 600;
+  color: var(--text);
 }
 .table ul {
   margin: 0;

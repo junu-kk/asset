@@ -1,10 +1,55 @@
 :root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color-scheme: light;
+  color-scheme: light dark;
+
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --border: #e5e7eb;
+  --text: #111827;
+  --text-2: #374151;
+  --text-muted: #6b7280;
+
+  --link-hover: #eef2f7;
+  --link-active-bg: #e0e7ff;
+  --link-active-text: #1e3a8a;
+
+  --positive: #16a34a;
+  --negative: #dc2626;
+
+  --tooltip-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1220;
+    --surface: #111827;
+    --surface-2: #0f172a;
+    --border: #1f2937;
+    --text: #f3f4f6;
+    --text-2: #d1d5db;
+    --text-muted: #9ca3af;
+
+    --link-hover: #1f2937;
+    --link-active-bg: #1e3a8a;
+    --link-active-text: #bfdbfe;
+
+    --positive: #22c55e;
+    --negative: #ef4444;
+
+    --tooltip-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+  }
+}
+
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
-  background: #f3f4f6;
-  color: #111827;
+  background: var(--bg);
+  color: var(--text);
 }
+
+/* Recharts dark-mode adjustments */
+.recharts-cartesian-axis-tick text { fill: var(--text-muted); }
+.recharts-cartesian-grid line { stroke: var(--border); }
+.recharts-default-legend .recharts-legend-item-text { color: var(--text-2) !important; }
