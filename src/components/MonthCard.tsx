@@ -13,11 +13,27 @@ export default function MonthCard({ record }: Props) {
   return (
     <article className={styles.card}>
       <header className={styles.header}>
-        <strong>{record.month}</strong>
-        <span> · 수입 {formatManwon(s.incomeTotal)}</span>
-        <span> · 지출 {formatManwon(s.expenseTotal)}</span>
-        <span> · 누적 {formatManwon(s.assetTotal)} ({ratio})</span>
-        {record.reportedAt && <span className={styles.reportedAt}>({record.reportedAt})</span>}
+        <div className={styles.headLeft}>
+          <h2 className={styles.month}>{record.month}</h2>
+          {record.reportedAt && <span className={styles.reportedAt}>{record.reportedAt} 작성</span>}
+        </div>
+        <div className={styles.headRight}>
+          <div className={styles.metric}>
+            <span className={`${styles.metricLabel} ${styles.income}`}>수입</span>
+            <span className={styles.metricValue}>{formatManwon(s.incomeTotal)}</span>
+          </div>
+          <div className={styles.metric}>
+            <span className={`${styles.metricLabel} ${styles.expense}`}>지출</span>
+            <span className={styles.metricValue}>{formatManwon(s.expenseTotal)}</span>
+          </div>
+          <div className={styles.metric}>
+            <span className={`${styles.metricLabel} ${styles.asset}`}>누적</span>
+            <span className={`${styles.metricValue} ${styles.assetValue}`}>
+              {formatManwon(s.assetTotal)}
+            </span>
+            <span className={styles.ratio}>{ratio}</span>
+          </div>
+        </div>
       </header>
       <FlowTable
         income={record.income}

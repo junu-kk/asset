@@ -14,6 +14,16 @@ type Props = {
   ratio: string;
 };
 
+type ItemRowProps = { name: string; amount: number };
+function ItemRow({ name, amount }: ItemRowProps) {
+  return (
+    <li className={styles.item}>
+      <span className={styles.itemName}>{name}</span>
+      <span className={styles.itemAmount}>{formatManwon(amount)}</span>
+    </li>
+  );
+}
+
 export default function FlowTable({
   income,
   expense,
@@ -26,45 +36,60 @@ export default function FlowTable({
   ratio,
 }: Props) {
   return (
-    <table className={styles.table}>
-      <thead>
-        <tr>
-          <th>수입 {formatManwon(incomeTotal)}</th>
-          <th>지출 {formatManwon(expenseTotal)}</th>
-          <th>누적 {formatManwon(cashTotal + investmentTotal)} ({ratio})</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <ul>
-              {income.map((it, i) => (
-                <li key={i}>{it.name} {formatManwon(it.amount)}</li>
-              ))}
-            </ul>
-          </td>
-          <td>
-            <ul>
-              {expense.map((it, i) => (
-                <li key={i}>{it.name} {formatManwon(it.amount)}</li>
-              ))}
-            </ul>
-          </td>
-          <td>
-            <ul>
-              {cash.map((it, i) => (
-                <li key={`c${i}`}>{it.name} {formatManwon(it.amount)}</li>
-              ))}
-            </ul>
-            <div className={styles.divider} />
-            <ul>
-              {investment.map((it, i) => (
-                <li key={`v${i}`}>{it.name} {formatManwon(it.amount)}</li>
-              ))}
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div className={styles.grid}>
+      <section className={`${styles.col} ${styles.colIncome}`}>
+        <header className={styles.colHeader}>
+          <span className={styles.colTitle}>수입</span>
+          <span className={styles.colTotal}>{formatManwon(incomeTotal)}</span>
+        </header>
+        <ul className={styles.list}>
+          {income.map((it, i) => (
+            <ItemRow key={i} name={it.name} amount={it.amount} />
+          ))}
+        </ul>
+      </section>
+
+      <section className={`${styles.col} ${styles.colExpense}`}>
+        <header className={styles.colHeader}>
+          <span className={styles.colTitle}>지출</span>
+          <span className={styles.colTotal}>{formatManwon(expenseTotal)}</span>
+        </header>
+        <ul className={styles.list}>
+          {expense.map((it, i) => (
+            <ItemRow key={i} name={it.name} amount={it.amount} />
+          ))}
+        </ul>
+      </section>
+
+      <section className={`${styles.col} ${styles.colAsset}`}>
+        <header className={styles.colHeader}>
+          <span className={styles.colTitle}>누적</span>
+          <span className={styles.colTotal}>
+            {formatManwon(cashTotal + investmentTotal)}
+            <span className={styles.colRatio}>{ratio}</span>
+          </span>
+        </header>
+        <div className={styles.subgroup}>
+          <div className={styles.subgroupTitle}>
+            현금성 <span className={styles.subgroupTotal}>{formatManwon(cashTotal)}</span>
+          </div>
+          <ul className={styles.list}>
+            {cash.map((it, i) => (
+              <ItemRow key={`c${i}`} name={it.name} amount={it.amount} />
+            ))}
+          </ul>
+        </div>
+        <div className={styles.subgroup}>
+          <div className={styles.subgroupTitle}>
+            투자성 <span className={styles.subgroupTotal}>{formatManwon(investmentTotal)}</span>
+          </div>
+          <ul className={styles.list}>
+            {investment.map((it, i) => (
+              <ItemRow key={`v${i}`} name={it.name} amount={it.amount} />
+            ))}
+          </ul>
+        </div>
+      </section>
+    </div>
   );
 }

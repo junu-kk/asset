@@ -1,23 +1,123 @@
 .card {
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 24px;
   background: var(--surface);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.04);
 }
+
 .header {
-  font-size: 15px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.headLeft {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.month {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
+
 .reportedAt {
-  margin-left: 8px;
   color: var(--text-muted);
   font-size: 12px;
 }
+
+.headRight {
+  display: flex;
+  gap: 24px;
+  align-items: baseline;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  min-width: 64px;
+}
+
+.metricLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.metricLabel.income {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+.metricLabel.expense {
+  color: #c2410c;
+  background: #ffedd5;
+}
+.metricLabel.asset {
+  color: #166534;
+  background: #dcfce7;
+}
+
+@media (prefers-color-scheme: dark) {
+  .metricLabel.income {
+    color: #93c5fd;
+    background: rgba(59, 130, 246, 0.18);
+  }
+  .metricLabel.expense {
+    color: #fdba74;
+    background: rgba(249, 115, 22, 0.2);
+  }
+  .metricLabel.asset {
+    color: #86efac;
+    background: rgba(34, 197, 94, 0.18);
+  }
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.assetValue {
+  font-size: 22px;
+}
+
+.ratio {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
 .notes {
-  margin-top: 16px;
+  margin-top: 20px;
+  padding: 16px 18px;
   font-size: 14px;
   color: var(--text-2);
+  background: var(--surface-2);
+  border-radius: 8px;
+  border-left: 3px solid var(--border);
+  line-height: 1.6;
 }
-.notes ul { padding-left: 20px; }
+.notes ul {
+  padding-left: 20px;
+  margin: 4px 0;
+}
 .notes li { margin-bottom: 4px; }
+.notes p { margin: 0 0 8px; }
+.notes p:last-child { margin-bottom: 0; }
