@@ -6,20 +6,17 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  ReferenceLine,
-  Cell,
   LabelList,
 } from 'recharts';
 import { useState } from 'react';
 import type { MonthRecord } from '../types';
 import { buildSeries, calcCap } from '../lib/aggregate';
-import { formatManwon, formatSigned } from '../lib/format';
+import { formatManwon } from '../lib/format';
 import styles from './SavingsChart.module.css';
 
 type Props = { records: MonthRecord[] };
 
-const POSITIVE = '#16a34a';
-const NEGATIVE = '#dc2626';
+const SAVINGS_COLOR = '#16a34a';
 
 function makeTooltip(records: MonthRecord[]) {
   const map = new Map(records.map((r) => [r.month, r]));
@@ -43,7 +40,7 @@ function makeTooltip(records: MonthRecord[]) {
         </div>
         <div className={`${styles.row} ${styles.netRow}`}>
           <span>저축</span>
-          <span style={{ color: net >= 0 ? POSITIVE : NEGATIVE }}>{formatSigned(net)}</span>
+          <span style={{ color: SAVINGS_COLOR }}>{formatManwon(net)}</span>
         </div>
       </div>
     );
@@ -51,23 +48,18 @@ function makeTooltip(records: MonthRecord[]) {
 }
 
 const overFormatter = (v: number | string | undefined | null) =>
-  typeof v === 'number' ? `↑ ${formatSigned(v)}` : '';
+  typeof v === 'number' ? `↑ ${formatManwon(v)}` : '';
 
 export default function SavingsChart({ records }: Props) {
   const [capOutliers, setCapOutliers] = useState(true);
   const series = buildSeries(records);
   const cap = capOutliers ? calcCap(series.map((d) => d.savings)) : null;
 
-  const data = series.map((d) => {
-    const overPositive = cap !== null && d.savings > cap;
-    const overNegative = cap !== null && d.savings < -cap;
-    const cappedSavings = overPositive ? cap : overNegative ? -cap : d.savings;
-    return {
-      ...d,
-      cappedSavings,
-      overValue: overPositive || overNegative ? d.savings : null,
-    };
-  });
+  const data = series.map((d) => ({
+    ...d,
+    cappedSavings: cap !== null && d.savings > cap ? cap : d.savings,
+    overValue: cap !== null && d.savings > cap ? d.savings : null,
+  }));
 
   const TooltipContent = makeTooltip(records);
   return (
@@ -89,15 +81,11 @@ export default function SavingsChart({ records }: Props) {
           <XAxis dataKey="month" />
           <YAxis
             tickFormatter={(v) => formatManwon(Number(v))}
-            domain={cap !== null ? [-cap, cap] : undefined}
+            domain={cap !== null ? [0, cap] : [0, 'auto']}
             allowDataOverflow={cap !== null}
           />
           <Tooltip content={<TooltipContent />} cursor={{ fill: 'rgba(127,127,127,0.08)' }} />
-          <ReferenceLine y={0} stroke="var(--border)" />
-          <Bar dataKey="cappedSavings" name="저축">
-            {data.map((d, i) => (
-              <Cell key={i} fill={d.cappedSavings >= 0 ? POSITIVE : NEGATIVE} />
-            ))}
+          <Bar dataKey="cappedSavings" name="저축" fill={SAVINGS_COLOR}>
             <LabelList
               dataKey="overValue"
               position="top"
