@@ -8,9 +8,11 @@ import {
   CartesianGrid,
   ReferenceLine,
   Cell,
+  LabelList,
 } from 'recharts';
+import { useState } from 'react';
 import type { MonthRecord } from '../types';
-import { buildSeries } from '../lib/aggregate';
+import { buildSeries, calcCap } from '../lib/aggregate';
 import { formatManwon, formatSigned } from '../lib/format';
 import styles from './SavingsChart.module.css';
 
@@ -48,23 +50,60 @@ function makeTooltip(records: MonthRecord[]) {
   };
 }
 
+const overFormatter = (v: number | string | undefined | null) =>
+  typeof v === 'number' ? `↑ ${formatSigned(v)}` : '';
+
 export default function SavingsChart({ records }: Props) {
-  const data = buildSeries(records);
+  const [capOutliers, setCapOutliers] = useState(true);
+  const series = buildSeries(records);
+  const cap = capOutliers ? calcCap(series.map((d) => d.savings)) : null;
+
+  const data = series.map((d) => {
+    const overPositive = cap !== null && d.savings > cap;
+    const overNegative = cap !== null && d.savings < -cap;
+    const cappedSavings = overPositive ? cap : overNegative ? -cap : d.savings;
+    return {
+      ...d,
+      cappedSavings,
+      overValue: overPositive || overNegative ? d.savings : null,
+    };
+  });
+
   const TooltipContent = makeTooltip(records);
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>월별 저축 (수입 − 지출)</h2>
+      <header className={styles.header}>
+        <h2 className={styles.title}>월별 저축 (수입 − 지출)</h2>
+        <label className={styles.toggle}>
+          <input
+            type="checkbox"
+            checked={capOutliers}
+            onChange={(e) => setCapOutliers(e.target.checked)}
+          />
+          이상치 가리기
+        </label>
+      </header>
       <ResponsiveContainer width="100%" height={260}>
-        <BarChart data={data} margin={{ top: 10, right: 24, bottom: 0, left: 0 }}>
+        <BarChart data={data} margin={{ top: 24, right: 24, bottom: 0, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis tickFormatter={(v) => formatManwon(Number(v))} />
+          <YAxis
+            tickFormatter={(v) => formatManwon(Number(v))}
+            domain={cap !== null ? [-cap, cap] : undefined}
+            allowDataOverflow={cap !== null}
+          />
           <Tooltip content={<TooltipContent />} cursor={{ fill: 'rgba(127,127,127,0.08)' }} />
           <ReferenceLine y={0} stroke="var(--border)" />
-          <Bar dataKey="savings" name="저축">
+          <Bar dataKey="cappedSavings" name="저축">
             {data.map((d, i) => (
-              <Cell key={i} fill={d.savings >= 0 ? POSITIVE : NEGATIVE} />
+              <Cell key={i} fill={d.cappedSavings >= 0 ? POSITIVE : NEGATIVE} />
             ))}
+            <LabelList
+              dataKey="overValue"
+              position="top"
+              formatter={overFormatter}
+              className={styles.overLabel}
+            />
           </Bar>
         </BarChart>
       </ResponsiveContainer>

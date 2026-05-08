@@ -51,6 +51,15 @@ export function buildSeries(records: MonthRecord[]): SeriesPoint[] {
   });
 }
 
+export function calcCap(values: number[], multiplier = 1.5): number | null {
+  if (values.length === 0) return null;
+  const abs = values.map((v) => Math.abs(v)).sort((a, b) => a - b);
+  const p75Idx = Math.min(abs.length - 1, Math.floor(abs.length * 0.75));
+  const p75 = abs[p75Idx];
+  if (p75 === 0) return null;
+  return Math.ceil((p75 * multiplier) / 100) * 100;
+}
+
 export function totalSavings(records: MonthRecord[]): number {
   return records.reduce((acc, r) => {
     const s = monthSummary(r);

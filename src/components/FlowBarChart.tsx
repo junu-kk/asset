@@ -7,9 +7,11 @@ import {
   Tooltip,
   CartesianGrid,
   Legend,
+  LabelList,
 } from 'recharts';
+import { useState } from 'react';
 import type { MonthRecord } from '../types';
-import { buildSeries } from '../lib/aggregate';
+import { buildSeries, calcCap } from '../lib/aggregate';
 import { formatManwon } from '../lib/format';
 import styles from './FlowBarChart.module.css';
 
@@ -41,21 +43,65 @@ function makeTooltip(records: MonthRecord[]) {
   };
 }
 
+const overFormatter = (v: number | string | undefined | null) =>
+  typeof v === 'number' ? `↑ ${formatManwon(v)}` : '';
+
 export default function FlowBarChart({ records }: Props) {
-  const data = buildSeries(records);
+  const [capOutliers, setCapOutliers] = useState(true);
+  const series = buildSeries(records);
+  const cap = capOutliers
+    ? calcCap(series.flatMap((d) => [d.income, d.expense]))
+    : null;
+
+  const data = series.map((d) => ({
+    ...d,
+    incomeCapped: cap !== null && d.income > cap ? cap : d.income,
+    expenseCapped: cap !== null && d.expense > cap ? cap : d.expense,
+    incomeOver: cap !== null && d.income > cap ? d.income : null,
+    expenseOver: cap !== null && d.expense > cap ? d.expense : null,
+  }));
+
   const TooltipContent = makeTooltip(records);
   return (
     <section className={styles.section}>
-      <h2 className={styles.title}>월별 수입 / 지출</h2>
+      <header className={styles.header}>
+        <h2 className={styles.title}>월별 수입 / 지출</h2>
+        <label className={styles.toggle}>
+          <input
+            type="checkbox"
+            checked={capOutliers}
+            onChange={(e) => setCapOutliers(e.target.checked)}
+          />
+          이상치 가리기
+        </label>
+      </header>
       <ResponsiveContainer width="100%" height={260}>
-        <BarChart data={data} margin={{ top: 10, right: 24, bottom: 0, left: 0 }}>
+        <BarChart data={data} margin={{ top: 24, right: 24, bottom: 0, left: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="month" />
-          <YAxis tickFormatter={(v) => formatManwon(Number(v))} />
-          <Tooltip content={<TooltipContent />} />
+          <YAxis
+            tickFormatter={(v) => formatManwon(Number(v))}
+            domain={cap !== null ? [0, cap] : undefined}
+            allowDataOverflow={cap !== null}
+          />
+          <Tooltip content={<TooltipContent />} cursor={{ fill: 'rgba(127,127,127,0.08)' }} />
           <Legend />
-          <Bar dataKey="income" name="수입" fill="#3b82f6" />
-          <Bar dataKey="expense" name="지출" fill="#f97316" />
+          <Bar dataKey="incomeCapped" name="수입" fill="#3b82f6">
+            <LabelList
+              dataKey="incomeOver"
+              position="top"
+              formatter={overFormatter}
+              className={styles.overLabel}
+            />
+          </Bar>
+          <Bar dataKey="expenseCapped" name="지출" fill="#f97316">
+            <LabelList
+              dataKey="expenseOver"
+              position="top"
+              formatter={overFormatter}
+              className={styles.overLabel}
+            />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </section>
