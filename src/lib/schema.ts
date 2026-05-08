@@ -1,0 +1,29 @@
+import { z } from 'zod';
+import type { MonthRecord } from '../types';
+
+const itemSchema = z.object({
+  name: z.string(),
+  amount: z.number(),
+});
+
+const monthRecordSchema = z.object({
+  month: z.string().regex(/^\d{4}-\d{2}$/, 'month must be YYYY-MM'),
+  reportedAt: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  income: z.array(itemSchema),
+  expense: z.array(itemSchema),
+  assets: z.object({
+    cash: z.array(itemSchema),
+    investment: z.array(itemSchema),
+  }),
+  notes: z.string(),
+});
+
+const monthsSchema = z.array(monthRecordSchema);
+
+export function parseMonths(raw: unknown): MonthRecord[] {
+  const parsed = monthsSchema.parse(raw);
+  return [...parsed].sort((a, b) => a.month.localeCompare(b.month));
+}
