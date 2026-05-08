@@ -1,7 +1,7 @@
 import ReactMarkdown from 'react-markdown';
 import type { MonthRecord } from '../types';
 import { monthSummary } from '../lib/aggregate';
-import { formatManwon, formatRatio } from '../lib/format';
+import { formatManwon, formatRatio, formatSigned } from '../lib/format';
 import FlowTable from './FlowTable';
 import styles from './MonthCard.module.css';
 
@@ -10,6 +10,7 @@ type Props = { record: MonthRecord };
 export default function MonthCard({ record }: Props) {
   const s = monthSummary(record);
   const ratio = formatRatio(s.cashTotal, s.investmentTotal);
+  const savings = s.incomeTotal - s.expenseTotal;
   return (
     <article className={styles.card}>
       <header className={styles.header}>
@@ -25,6 +26,16 @@ export default function MonthCard({ record }: Props) {
           <div className={styles.metric}>
             <span className={`${styles.metricLabel} ${styles.expense}`}>지출</span>
             <span className={styles.metricValue}>{formatManwon(s.expenseTotal)}</span>
+          </div>
+          <div className={styles.metric}>
+            <span className={`${styles.metricLabel} ${styles.savings}`}>저축</span>
+            <span
+              className={`${styles.metricValue} ${
+                savings >= 0 ? styles.savingsPositive : styles.savingsNegative
+              }`}
+            >
+              {formatSigned(savings)}
+            </span>
           </div>
           <div className={styles.metric}>
             <span className={`${styles.metricLabel} ${styles.asset}`}>누적</span>

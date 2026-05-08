@@ -52,8 +52,8 @@ describe('buildSeries', () => {
     ];
     const series = buildSeries(records);
     expect(series).toEqual([
-      { month: '2025-01', cash: 100, investment: 200, total: 300, income: 10, expense: 5 },
-      { month: '2025-02', cash: 150, investment: 250, total: 400, income: 20, expense: 8 },
+      { month: '2025-01', cash: 100, investment: 200, total: 300, income: 10, expense: 5, savings: 5 },
+      { month: '2025-02', cash: 150, investment: 250, total: 400, income: 20, expense: 8, savings: 12 },
     ]);
   });
 });

@@ -33,6 +33,7 @@ export type SeriesPoint = {
   total: number;
   income: number;
   expense: number;
+  savings: number;
 };
 
 export function buildSeries(records: MonthRecord[]): SeriesPoint[] {
@@ -45,8 +46,16 @@ export function buildSeries(records: MonthRecord[]): SeriesPoint[] {
       total: s.assetTotal,
       income: s.incomeTotal,
       expense: s.expenseTotal,
+      savings: s.incomeTotal - s.expenseTotal,
     };
   });
+}
+
+export function totalSavings(records: MonthRecord[]): number {
+  return records.reduce((acc, r) => {
+    const s = monthSummary(r);
+    return acc + s.incomeTotal - s.expenseTotal;
+  }, 0);
 }
 
 export function monthOverMonth(records: MonthRecord[]): number | null {

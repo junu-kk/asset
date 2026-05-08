@@ -3,6 +3,7 @@ import { months } from '../data/loader';
 import KpiHeader from '../components/KpiHeader';
 import AssetTimelineChart from '../components/AssetTimelineChart';
 import FlowBarChart from '../components/FlowBarChart';
+import SavingsChart from '../components/SavingsChart';
 import { filterByPeriod, type Period } from '../lib/aggregate';
 import styles from './DashboardPage.module.css';
 
@@ -37,9 +38,10 @@ export default function DashboardPage() {
           <option value="last12">최근 12개월</option>
         </select>
       </div>
-      <KpiHeader records={months} />
+      <KpiHeader records={months} period={period} />
       <AssetTimelineChart records={filtered} />
       <FlowBarChart records={filtered} />
+      <SavingsChart records={filtered} />
     </>
   );
 }

@@ -1,17 +1,29 @@
 import type { MonthRecord } from '../types';
-import { monthSummary, monthOverMonth, ytdNet } from '../lib/aggregate';
+import {
+  monthSummary,
+  monthOverMonth,
+  totalSavings,
+  filterByPeriod,
+  type Period,
+} from '../lib/aggregate';
 import { formatManwon, formatSigned, formatRatio } from '../lib/format';
 import styles from './KpiHeader.module.css';
 
-type Props = { records: MonthRecord[] };
+type Props = { records: MonthRecord[]; period: Period };
 
-export default function KpiHeader({ records }: Props) {
+const SAVINGS_LABEL: Record<Period, string> = {
+  all: '총 저축액',
+  thisYear: '올해 저축액',
+  last12: '최근 12개월 저축액',
+};
+
+export default function KpiHeader({ records, period }: Props) {
   if (records.length === 0) {
     return <p className={styles.empty}>아직 기록이 없습니다.</p>;
   }
   const last = monthSummary(records[records.length - 1]);
   const mom = monthOverMonth(records);
-  const ytd = ytdNet(records);
+  const savings = totalSavings(filterByPeriod(records, period));
 
   return (
     <div className={styles.grid}>
@@ -34,8 +46,12 @@ export default function KpiHeader({ records }: Props) {
         <div className={styles.value}>{formatRatio(last.cashTotal, last.investmentTotal)}</div>
       </div>
       <div className={styles.card}>
-        <div className={styles.label}>올해 순수입</div>
-        <div className={styles.value}>{formatSigned(ytd)}</div>
+        <div className={styles.label}>{SAVINGS_LABEL[period]}</div>
+        <div
+          className={`${styles.value} ${savings >= 0 ? styles.positive : styles.negative}`}
+        >
+          {formatSigned(savings)}
+        </div>
       </div>
     </div>
   );
