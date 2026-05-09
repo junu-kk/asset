@@ -1,6 +1,23 @@
 # Asset
 
+<p align="center">
+  <img src="public/og.png" alt="Asset Tracker" width="720" />
+</p>
+
 월별 자산 트래커. 로컬 dev 환경에서 자유롭게 입력/수정하고, GitHub Pages 등 정적 호스팅에는 비공개 데이터를 암호화해 배포한다.
+
+🌐 https://junu-kk.github.io/asset/
+
+## Screenshots
+
+### 대시보드
+![대시보드](.github/screenshots/dashboard.png)
+
+### 월별 기록
+![월별 기록](.github/screenshots/monthly.png)
+
+### 새 기록 / 수정
+![편집 폼](.github/screenshots/edit.png)
 
 ## 개발
 
@@ -32,32 +49,6 @@ ASSET_KEY=내비밀번호 pnpm ghpages
 - 사이드바 "🔒 잠금 해제" → 비밀번호 모달 → 정답 시 실제 데이터 swap
 - 비밀번호는 sessionStorage에 임시 저장 (탭 닫으면 사라짐)
 - 편집 UI는 prod 빌드에서 비활성화 (사이드바 "+ 새 기록", 카드 수정 버튼, /edit 라우트 모두)
-
-## git 히스토리에서 months.json 흔적 제거
-
-지금까지 커밋된 `src/data/months.json`이 GitHub 옛 commit에 그대로 남아있다. 다음으로 삭제:
-
-```bash
-# 1. 백업
-cd ..
-cp -r asset asset-backup-$(date +%Y%m%d)
-cd asset
-
-# 2. git-filter-repo 설치
-brew install git-filter-repo
-# 또는 pip install git-filter-repo
-
-# 3. 히스토리에서 months.json + docs/ 통째로 제거
-git filter-repo \
-  --path src/data/months.json \
-  --path docs/ \
-  --invert-paths --force
-
-# 4. force push (단독 작업이라 안전)
-git push --force origin main
-```
-
-이 작업은 모든 커밋 SHA를 바꾼다. 협업 repo면 다른 협업자에게 미리 알리고, 단독 작업이면 그냥 force push로 끝.
 
 ## 보안 모델
 
