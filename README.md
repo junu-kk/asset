@@ -10,14 +10,9 @@
 
 ## Screenshots
 
-### 대시보드
-![대시보드](.github/screenshots/dashboard.png)
-
-### 월별 기록
-![월별 기록](.github/screenshots/monthly.png)
-
-### 새 기록 / 수정
-![편집 폼](.github/screenshots/edit.png)
+| 대시보드 | 월별기록 | 새 기록 & 수정 |
+| -- | -- | -- |
+|![img_1.png](public/img_1.png) | ![img_2.png](public/img_2.png) | ![img.png](public/img.png) |
 
 ## 개발
 
