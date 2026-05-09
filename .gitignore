@@ -22,3 +22,6 @@ yarn-error.log*
 src/data/months.json
 .env
 .env.local
+
+# 설계 문서/노트 (개인정보 포함 가능)
+docs/

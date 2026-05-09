@@ -40,15 +40,18 @@ ASSET_KEY=내비밀번호 pnpm deploy
 ```bash
 # 1. 백업
 cd ..
-cp -r asset asset-backup
+cp -r asset asset-backup-$(date +%Y%m%d)
 cd asset
 
 # 2. git-filter-repo 설치
 brew install git-filter-repo
 # 또는 pip install git-filter-repo
 
-# 3. 히스토리에서 months.json 제거
-git filter-repo --path src/data/months.json --invert-paths
+# 3. 히스토리에서 months.json + docs/ 통째로 제거
+git filter-repo \
+  --path src/data/months.json \
+  --path docs/ \
+  --invert-paths --force
 
 # 4. force push (단독 작업이라 안전)
 git push --force origin main
