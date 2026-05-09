@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import type { MonthRecord } from '../types';
 import { monthSummary } from '../lib/aggregate';
@@ -17,6 +18,7 @@ export default function MonthCard({ record }: Props) {
         <div className={styles.headLeft}>
           <h2 className={styles.month}>{record.month}</h2>
           {record.reportedAt && <span className={styles.reportedAt}>{record.reportedAt} 작성</span>}
+          <Link to={`/edit/${record.month}`} className={styles.editBtn}>수정</Link>
         </div>
         <div className={styles.headRight}>
           <div className={styles.metric}>

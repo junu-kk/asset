@@ -132,3 +132,19 @@
 .notes li { margin-bottom: 4px; }
 .notes p { margin: 0 0 8px; }
 .notes p:last-child { margin-bottom: 0; }
+
+.editBtn {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  background: transparent;
+}
+.editBtn:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}

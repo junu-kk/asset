@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import MonthlyPage from './pages/MonthlyPage';
+import EditPage from './pages/EditPage';
 import styles from './App.module.css';
 
 export default function App() {
@@ -12,6 +13,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/monthly" element={<MonthlyPage />} />
+          <Route path="/edit" element={<EditPage />} />
+          <Route path="/edit/:month" element={<EditPage />} />
         </Routes>
       </main>
     </div>

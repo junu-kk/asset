@@ -18,6 +18,13 @@ export default function Sidebar() {
       >
         월별 기록
       </NavLink>
+      <NavLink
+        to="/edit"
+        end
+        className={({ isActive }) => (isActive ? `${styles.link} ${styles.active}` : styles.link)}
+      >
+        + 새 기록
+      </NavLink>
     </nav>
   );
 }
