@@ -19,10 +19,10 @@ pnpm build        # tsc + vite build (+ ASSET_KEY 있으면 암호화)
 2. 데이터 갱신 시:
 
 ```bash
-ASSET_KEY=내비밀번호 pnpm deploy
+ASSET_KEY=내비밀번호 pnpm ghpages
 ```
 
-`pnpm deploy`는 다음을 한다:
+`pnpm ghpages`는 다음을 한다:
 1. `BASE_PATH=/<repo>/`로 vite build (sample.json 번들링됨)
 2. `ASSET_KEY`로 `months.json`을 암호화해 `dist/encrypted.json` 출력
 3. `gh-pages -d dist`로 `gh-pages` 브랜치에 push
