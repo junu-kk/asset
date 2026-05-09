@@ -237,6 +237,7 @@ export default function EditPage() {
       });
       if (res.ok) {
         alert('저장 완료. months.json이 갱신되었습니다');
+        navigate('/monthly');
         return;
       }
     } catch {
@@ -244,6 +245,7 @@ export default function EditPage() {
     }
     alert('서버 저장 실패. 파일 다운로드로 대체합니다');
     downloadJson(merged, 'months.json');
+    navigate('/monthly');
   };
 
   return (
