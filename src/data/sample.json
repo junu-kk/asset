@@ -1,0 +1,189 @@
+[
+  {
+    "month": "2025-10",
+    "income": [
+      { "name": "월급", "amount": 380 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 95 },
+      { "name": "개업지", "amount": 22 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 1500 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 3200 },
+        { "name": "자사주", "amount": 1100 },
+        { "name": "코인", "amount": 250 }
+      ]
+    },
+    "notes": "- 샘플 데이터입니다\n- 잠금 해제 후 실제 자산을 보세요"
+  },
+  {
+    "month": "2025-11",
+    "income": [
+      { "name": "월급", "amount": 395 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "k패스환급", "amount": 4 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 110 },
+      { "name": "개업지", "amount": 28 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 1750 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 3450 },
+        { "name": "자사주", "amount": 1180 },
+        { "name": "코인", "amount": 280 }
+      ]
+    },
+    "notes": "- 샘플 데이터"
+  },
+  {
+    "month": "2025-12",
+    "income": [
+      { "name": "월급", "amount": 410 },
+      { "name": "인센", "amount": 600 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 130 },
+      { "name": "선물", "amount": 80 },
+      { "name": "개업지", "amount": 25 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 2400 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 3700 },
+        { "name": "자사주", "amount": 1220 },
+        { "name": "코인", "amount": 320 }
+      ]
+    },
+    "notes": "- 샘플 데이터\n- 연말 인센 반영"
+  },
+  {
+    "month": "2026-01",
+    "income": [
+      { "name": "월급", "amount": 420 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 100 },
+      { "name": "개업지", "amount": 25 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 2680 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 3850 },
+        { "name": "자사주", "amount": 1260 },
+        { "name": "코인", "amount": 350 }
+      ]
+    },
+    "notes": "- 샘플 데이터"
+  },
+  {
+    "month": "2026-02",
+    "income": [
+      { "name": "월급", "amount": 405 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "k패스환급", "amount": 6 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 120 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 2900 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 4020 },
+        { "name": "자사주", "amount": 1240 },
+        { "name": "코인", "amount": 380 }
+      ]
+    },
+    "notes": "- 샘플 데이터"
+  },
+  {
+    "month": "2026-03",
+    "income": [
+      { "name": "월급", "amount": 415 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 115 },
+      { "name": "개업지", "amount": 27 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 3150 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 4180 },
+        { "name": "자사주", "amount": 1280 },
+        { "name": "코인", "amount": 410 }
+      ]
+    },
+    "notes": "- 샘플 데이터"
+  },
+  {
+    "month": "2026-04",
+    "income": [
+      { "name": "월급", "amount": 420 },
+      { "name": "개업지", "amount": 30 },
+      { "name": "k패스환급", "amount": 5 },
+      { "name": "월간 네페포", "amount": 1 }
+    ],
+    "expense": [
+      { "name": "일반", "amount": 105 },
+      { "name": "개업지", "amount": 28 },
+      { "name": "내일로", "amount": 5 },
+      { "name": "사원증", "amount": 4 }
+    ],
+    "assets": {
+      "cash": [
+        { "name": "현금", "amount": 3380 },
+        { "name": "채권", "amount": 800 }
+      ],
+      "investment": [
+        { "name": "나스닥", "amount": 4350 },
+        { "name": "자사주", "amount": 1310 },
+        { "name": "코인", "amount": 440 }
+      ]
+    },
+    "notes": "- 샘플 데이터\n- 잠금 해제하면 실제 데이터를 볼 수 있어요"
+  }
+]

@@ -17,3 +17,8 @@ yarn-error.log*
 .DS_Store
 
 .idea/
+
+# 실제 자산 데이터는 git에 올리지 않음
+src/data/months.json
+.env
+.env.local
