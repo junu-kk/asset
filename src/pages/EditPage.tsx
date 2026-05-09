@@ -219,7 +219,7 @@ export default function EditPage() {
   const [나스닥, set나스닥] = useState(initial.나스닥);
   const [notes, setNotes] = useState(initial.notes);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const state: FormState = { month, reportedAt, income, expense, assets, 나스닥, notes };
     const errors = validate(state, isEditMode);
     if (errors.length > 0) {
@@ -229,6 +229,20 @@ export default function EditPage() {
     const record = buildRecord(state);
     const others = initialMonths.filter((r) => r.month !== record.month);
     const merged = [...others, record].sort((a, b) => a.month.localeCompare(b.month));
+    try {
+      const res = await fetch('/api/save-months', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(merged, null, 2),
+      });
+      if (res.ok) {
+        alert('저장 완료. months.json이 갱신되었습니다');
+        return;
+      }
+    } catch {
+      // fallthrough to download fallback
+    }
+    alert('서버 저장 실패. 파일 다운로드로 대체합니다');
     downloadJson(merged, 'months.json');
   };
 
