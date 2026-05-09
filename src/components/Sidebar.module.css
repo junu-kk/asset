@@ -57,3 +57,42 @@
   background: var(--link-hover);
   color: var(--text);
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+    padding: 10px 14px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    margin-bottom: 0;
+    margin-right: auto;
+    font-size: 16px;
+  }
+  .link {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  .lockArea {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+  .lockBadge {
+    margin-right: auto;
+  }
+  .lockBtn {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+}
