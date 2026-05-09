@@ -56,6 +56,7 @@ type FormState = {
   assets: AssetRow[];
   나스닥: NasdaqState;
   notes: string;
+  originalNasdaqAmount: number | null;
 };
 
 function loadFromRecord(r: MonthRecord): FormState {
@@ -99,6 +100,7 @@ function loadFromRecord(r: MonthRecord): FormState {
   const 나스닥: NasdaqState = meta
     ? { 보유: String(meta.보유), 수익: String(meta.수익), 공제: meta.공제 }
     : EMPTY_NASDAQ;
+  const 나스닥Item = r.assets.investment.find((it) => it.name === '나스닥');
   return {
     month: r.month,
     reportedAt: r.reportedAt ?? todayString(),
@@ -107,6 +109,7 @@ function loadFromRecord(r: MonthRecord): FormState {
     assets,
     나스닥,
     notes: r.notes,
+    originalNasdaqAmount: 나스닥Item?.amount ?? null,
   };
 }
 
@@ -132,10 +135,13 @@ function buildRecord(state: FormState): MonthRecord {
     if (r.fixed && r.name === '나스닥') {
       const 보유 = parseExpression(state.나스닥.보유);
       const 수익 = parseExpression(state.나스닥.수익);
-      if (!보유.valid || !수익.valid) continue;
-      const amount = computeNasdaq({ 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 });
-      investment.push({ name: '나스닥', amount });
-      nasdaqMeta = { 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 };
+      if (보유.valid && 수익.valid) {
+        const amount = computeNasdaq({ 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 });
+        investment.push({ name: '나스닥', amount });
+        nasdaqMeta = { 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 };
+      } else if (state.originalNasdaqAmount !== null) {
+        investment.push({ name: '나스닥', amount: state.originalNasdaqAmount });
+      }
       continue;
     }
     const a = toAmount(r.amount);
@@ -208,6 +214,7 @@ export default function EditPage() {
       assets: DEFAULT_ASSETS,
       나스닥: EMPTY_NASDAQ,
       notes: '',
+      originalNasdaqAmount: null,
     };
   }, [isEditMode, monthParam]);
 
@@ -220,7 +227,16 @@ export default function EditPage() {
   const [notes, setNotes] = useState(initial.notes);
 
   const handleSave = async () => {
-    const state: FormState = { month, reportedAt, income, expense, assets, 나스닥, notes };
+    const state: FormState = {
+      month,
+      reportedAt,
+      income,
+      expense,
+      assets,
+      나스닥,
+      notes,
+      originalNasdaqAmount: initial.originalNasdaqAmount,
+    };
     const errors = validate(state, isEditMode);
     if (errors.length > 0) {
       alert(errors.join('\n'));
