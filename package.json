@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/encrypt.mjs",
+    "og": "node scripts/generate-og.mjs",
     "ghpages": "BASE_PATH=/asset/ pnpm build && cp dist/index.html dist/404.html && pnpm gh-pages -d dist",
     "preview": "vite preview",
     "test": "vitest run",
@@ -26,6 +27,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "gh-pages": "^6.3.0",
+    "sharp": "^0.34.5",
     "typescript": "^5.5.3",
     "vite": "^5.4.0",
     "vitest": "^2.0.5"
