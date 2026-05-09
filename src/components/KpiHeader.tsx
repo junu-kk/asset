@@ -3,6 +3,7 @@ import {
   monthSummary,
   monthOverMonth,
   totalSavings,
+  assetGrowth,
   filterByPeriod,
   type Period,
 } from '../lib/aggregate';
@@ -17,13 +18,21 @@ const SAVINGS_LABEL: Record<Period, string> = {
   last12: '최근 12개월 저축액',
 };
 
+const GROWTH_LABEL: Record<Period, string> = {
+  all: '총 자산증가',
+  thisYear: '올해 자산증가',
+  last12: '최근 12개월 자산증가',
+};
+
 export default function KpiHeader({ records, period }: Props) {
   if (records.length === 0) {
     return <p className={styles.empty}>아직 기록이 없습니다.</p>;
   }
   const last = monthSummary(records[records.length - 1]);
   const mom = monthOverMonth(records);
-  const savings = totalSavings(filterByPeriod(records, period));
+  const periodRecords = filterByPeriod(records, period);
+  const savings = totalSavings(periodRecords);
+  const growth = assetGrowth(periodRecords);
 
   return (
     <div className={styles.grid}>
@@ -51,6 +60,14 @@ export default function KpiHeader({ records, period }: Props) {
           className={`${styles.value} ${savings >= 0 ? styles.positive : styles.negative}`}
         >
           {formatSigned(savings)}
+        </div>
+      </div>
+      <div className={styles.card}>
+        <div className={styles.label}>{GROWTH_LABEL[period]}</div>
+        <div
+          className={`${styles.value} ${growth >= 0 ? styles.positive : styles.negative}`}
+        >
+          {formatSigned(growth)}
         </div>
       </div>
     </div>

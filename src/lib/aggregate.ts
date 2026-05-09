@@ -67,6 +67,13 @@ export function totalSavings(records: MonthRecord[]): number {
   }, 0);
 }
 
+export function assetGrowth(records: MonthRecord[]): number {
+  if (records.length < 2) return 0;
+  const first = monthSummary(records[0]);
+  const last = monthSummary(records[records.length - 1]);
+  return last.assetTotal - first.assetTotal;
+}
+
 export function monthOverMonth(records: MonthRecord[]): number | null {
   if (records.length < 2) return null;
   const last = monthSummary(records[records.length - 1]);
