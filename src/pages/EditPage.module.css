@@ -1,0 +1,90 @@
+.page {
+  max-width: 800px;
+}
+.heading {
+  margin: 0 0 16px;
+}
+.headerRow {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.headerField {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.headerInput {
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+}
+.headerInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.section {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.notes {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+.btnPrimary,
+.btnSecondary {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btnPrimary {
+  background: var(--text);
+  color: var(--surface);
+  border: 1px solid var(--text);
+}
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+.btnSecondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btnSecondary:hover {
+  border-color: var(--text-muted);
+}
