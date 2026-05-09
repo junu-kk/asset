@@ -300,7 +300,7 @@ export default function EditPage() {
           취소
         </button>
         <button type="button" className={styles.btnPrimary} onClick={handleSave}>
-          저장 → months.json 다운로드
+          저장
         </button>
       </div>
     </div>
