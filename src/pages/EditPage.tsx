@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
-import { months as initialMonths } from '../data/loader';
+import { useData } from '../data/DataContext';
 import { parseExpression } from '../lib/expression';
 import { computeNasdaq } from '../lib/nasdaq';
 import { downloadJson } from '../lib/download';
@@ -164,7 +164,7 @@ function buildRecord(state: FormState): MonthRecord {
   return record;
 }
 
-function validate(state: FormState, isEditMode: boolean): string[] {
+function validate(state: FormState, isEditMode: boolean, existingMonths: MonthRecord[]): string[] {
   const errors: string[] = [];
   if (!/^\d{4}-\d{2}$/.test(state.month)) {
     errors.push('월(month)은 YYYY-MM 형식이어야 합니다');
@@ -190,7 +190,7 @@ function validate(state: FormState, isEditMode: boolean): string[] {
       errors.push('나스닥 수익 표현식이 잘못됨');
     }
   }
-  if (!isEditMode && initialMonths.some((r) => r.month === state.month)) {
+  if (!isEditMode && existingMonths.some((r) => r.month === state.month)) {
     errors.push(`${state.month}은 이미 존재합니다. 수정 모드를 사용하세요`);
   }
   return errors;
@@ -199,6 +199,7 @@ function validate(state: FormState, isEditMode: boolean): string[] {
 export default function EditPage() {
   const navigate = useNavigate();
   const { month: monthParam } = useParams<{ month?: string }>();
+  const { months: initialMonths } = useData();
   const isEditMode = !!monthParam;
 
   const initial = useMemo<FormState>(() => {
@@ -237,7 +238,7 @@ export default function EditPage() {
       notes,
       originalNasdaqAmount: initial.originalNasdaqAmount,
     };
-    const errors = validate(state, isEditMode);
+    const errors = validate(state, isEditMode, initialMonths);
     if (errors.length > 0) {
       alert(errors.join('\n'));
       return;

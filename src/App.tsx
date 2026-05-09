@@ -13,8 +13,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/monthly" element={<MonthlyPage />} />
-          <Route path="/edit" element={<EditPage />} />
-          <Route path="/edit/:month" element={<EditPage />} />
+          {import.meta.env.DEV && <Route path="/edit" element={<EditPage />} />}
+          {import.meta.env.DEV && <Route path="/edit/:month" element={<EditPage />} />}
         </Routes>
       </main>
     </div>

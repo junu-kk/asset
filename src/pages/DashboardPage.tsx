@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { months } from '../data/loader';
+import { useData } from '../data/DataContext';
 import KpiHeader from '../components/KpiHeader';
 import AssetTimelineChart from '../components/AssetTimelineChart';
 import FlowBarChart from '../components/FlowBarChart';
@@ -16,6 +16,7 @@ function loadPeriod(): Period {
 }
 
 export default function DashboardPage() {
+  const { months } = useData();
   const [period, setPeriod] = useState<Period>(loadPeriod);
 
   useEffect(() => {

@@ -1,7 +1,8 @@
-import { months } from '../data/loader';
+import { useData } from '../data/DataContext';
 import MonthCard from '../components/MonthCard';
 
 export default function MonthlyPage() {
+  const { months } = useData();
   if (months.length === 0) {
     return (
       <>
