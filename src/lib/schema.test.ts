@@ -56,3 +56,34 @@ describe('parseMonths', () => {
     expect(result.map((r) => r.month)).toEqual(['2025-01', '2025-02', '2025-03']);
   });
 });
+
+describe('parseMonths _meta 호환', () => {
+  const base = {
+    month: '2026-01',
+    income: [],
+    expense: [],
+    assets: { cash: [], investment: [] },
+    notes: '',
+  };
+
+  it('_meta 없는 기존 데이터도 통과', () => {
+    const parsed = parseMonths([base]);
+    expect(parsed).toHaveLength(1);
+    expect(parsed[0]._meta).toBeUndefined();
+  });
+
+  it('_meta.나스닥 필드 보존', () => {
+    const raw = [{
+      ...base,
+      assets: { cash: [], investment: [{ name: '나스닥', amount: 9835 }] },
+      _meta: { 나스닥: { 보유: 10000, 수익: 1000, 공제: true } },
+    }];
+    const parsed = parseMonths(raw);
+    expect(parsed[0]._meta?.나스닥).toEqual({ 보유: 10000, 수익: 1000, 공제: true });
+  });
+
+  it('잘못된 _meta는 거부', () => {
+    const raw = [{ ...base, _meta: { 나스닥: { 보유: 'not number', 수익: 1000, 공제: true } } }];
+    expect(() => parseMonths(raw)).toThrow();
+  });
+});

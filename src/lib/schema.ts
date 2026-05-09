@@ -6,6 +6,12 @@ const itemSchema = z.object({
   amount: z.number(),
 });
 
+const nasdaqMetaSchema = z.object({
+  보유: z.number(),
+  수익: z.number(),
+  공제: z.boolean(),
+});
+
 const monthRecordSchema = z.object({
   month: z.string().regex(/^\d{4}-\d{2}$/, 'month must be YYYY-MM'),
   reportedAt: z
@@ -19,6 +25,11 @@ const monthRecordSchema = z.object({
     investment: z.array(itemSchema),
   }),
   notes: z.string(),
+  _meta: z
+    .object({
+      나스닥: nasdaqMetaSchema.optional(),
+    })
+    .optional(),
 });
 
 const monthsSchema = z.array(monthRecordSchema);
