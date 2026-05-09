@@ -1,5 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import MDEditor from '@uiw/react-md-editor';
+import '@uiw/react-md-editor/markdown-editor.css';
 import { months as initialMonths } from '../data/loader';
 import { parseExpression } from '../lib/expression';
 import { computeNasdaq } from '../lib/nasdaq';
@@ -267,12 +269,14 @@ export default function EditPage() {
 
       <section className={styles.section}>
         <h3 className={styles.title}>메모 (markdown)</h3>
-        <textarea
-          className={styles.notes}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          rows={6}
-        />
+        <div data-color-mode="auto">
+          <MDEditor
+            value={notes}
+            onChange={(v) => setNotes(v ?? '')}
+            preview="edit"
+            height={240}
+          />
+        </div>
       </section>
 
       <div className={styles.actions}>
