@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
+import SampleBanner from './components/SampleBanner';
 import DashboardPage from './pages/DashboardPage';
 import MonthlyPage from './pages/MonthlyPage';
 import EditPage from './pages/EditPage';
@@ -10,6 +11,7 @@ export default function App() {
     <div className={styles.shell}>
       <Sidebar />
       <main className={styles.main}>
+        <SampleBanner />
         <Routes>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/monthly" element={<MonthlyPage />} />
