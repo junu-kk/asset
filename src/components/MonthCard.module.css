@@ -148,3 +148,24 @@
   color: var(--text);
   border-color: var(--text-muted);
 }
+
+@media (max-width: 768px) {
+  .card {
+    padding: 16px;
+  }
+  .month {
+    font-size: 22px;
+  }
+  .headRight {
+    gap: 12px;
+  }
+  .metric {
+    min-width: 0;
+  }
+  .metricValue {
+    font-size: 16px;
+  }
+  .assetValue {
+    font-size: 18px;
+  }
+}
