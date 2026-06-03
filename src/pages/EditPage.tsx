@@ -15,7 +15,6 @@ import styles from './EditPage.module.css';
 const DEFAULT_INCOME: FlowRow[] = [
   { name: '월급', amount: '', fixed: true },
   { name: '개업지', amount: '30', fixed: true },
-  { name: 'k패스환급', amount: '', fixed: true },
   { name: '월간 네페포', amount: '1', fixed: true },
 ];
 
@@ -31,21 +30,24 @@ const DEFAULT_ASSETS: AssetRow[] = [
   { name: '달러', amount: '', fixed: true, bucket: 'cash' },
   { name: '채권', amount: '', fixed: true, bucket: 'cash' },
   { name: '나스닥', amount: '', fixed: true, bucket: 'investment' },
+  { name: '코스피', amount: '', fixed: true, bucket: 'investment' },
   { name: '자사주', amount: '', fixed: true, bucket: 'investment' },
   { name: '금', amount: '', fixed: true, bucket: 'investment' },
   { name: '코인', amount: '', fixed: true, bucket: 'investment' },
 ];
 
-const EMPTY_NASDAQ: NasdaqState = { 보유: '', 수익: '', 공제: false };
+const EMPTY_NASDAQ: NasdaqState = { 보유: '', 실현수익: '' };
 
 function todayString(): string {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-function thisMonthString(): string {
+// 보통 N월 정산을 N+1월 초에 하므로 새 기록의 기본 월은 전달로 둔다
+function lastMonthString(): string {
   const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  const prev = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+  return `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}`;
 }
 
 type FormState = {
@@ -98,7 +100,12 @@ function loadFromRecord(r: MonthRecord): FormState {
   }
   const meta = r._meta?.나스닥;
   const 나스닥: NasdaqState = meta
-    ? { 보유: String(meta.보유), 수익: String(meta.수익), 공제: meta.공제 }
+    ? {
+        보유: String(meta.보유),
+        // 실현수익이 있으면 그대로, 없으면 legacy 공제(false→한도소진=250, true/미정→0)에서 환산
+        실현수익:
+          meta.실현수익 !== undefined ? String(meta.실현수익) : meta.공제 === false ? '250' : '',
+      }
     : EMPTY_NASDAQ;
   const 나스닥Item = r.assets.investment.find((it) => it.name === '나스닥');
   return {
@@ -130,15 +137,16 @@ function buildRecord(state: FormState): MonthRecord {
   };
   const cash: AssetItem[] = [];
   const investment: AssetItem[] = [];
-  let nasdaqMeta: { 보유: number; 수익: number; 공제: boolean } | null = null;
+  let nasdaqMeta: { 보유: number; 실현수익: number } | null = null;
   for (const r of state.assets) {
     if (r.fixed && r.name === '나스닥') {
       const 보유 = parseExpression(state.나스닥.보유);
-      const 수익 = parseExpression(state.나스닥.수익);
-      if (보유.valid && 수익.valid) {
-        const amount = computeNasdaq({ 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 });
+      const 실현수익Raw = state.나스닥.실현수익.trim();
+      const 실현수익 = 실현수익Raw === '' ? { valid: true as const, value: 0 } : parseExpression(실현수익Raw);
+      if (보유.valid && 실현수익.valid) {
+        const amount = computeNasdaq({ 보유: 보유.value, 실현수익: 실현수익.value });
         investment.push({ name: '나스닥', amount });
-        nasdaqMeta = { 보유: 보유.value, 수익: 수익.value, 공제: state.나스닥.공제 };
+        nasdaqMeta = { 보유: 보유.value, 실현수익: 실현수익.value };
       } else if (state.originalNasdaqAmount !== null) {
         investment.push({ name: '나스닥', amount: state.originalNasdaqAmount });
       }
@@ -180,15 +188,11 @@ function validate(state: FormState, isEditMode: boolean, existingMonths: MonthRe
   checkRows(state.income, '수입');
   checkRows(state.expense, '지출');
   checkRows(state.assets.filter((a) => !(a.fixed && a.name === '나스닥')), '누적');
-  const 보유Empty = state.나스닥.보유.trim() === '';
-  const 수익Empty = state.나스닥.수익.trim() === '';
-  if (!보유Empty || !수익Empty) {
-    if (보유Empty || !parseExpression(state.나스닥.보유).valid) {
-      errors.push('나스닥 보유총액 표현식이 잘못됨');
-    }
-    if (수익Empty || !parseExpression(state.나스닥.수익).valid) {
-      errors.push('나스닥 수익 표현식이 잘못됨');
-    }
+  if (state.나스닥.보유.trim() !== '' && !parseExpression(state.나스닥.보유).valid) {
+    errors.push('나스닥 보유총액 표현식이 잘못됨');
+  }
+  if (state.나스닥.실현수익.trim() !== '' && !parseExpression(state.나스닥.실현수익).valid) {
+    errors.push('나스닥 실현수익 표현식이 잘못됨');
   }
   if (!isEditMode && existingMonths.some((r) => r.month === state.month)) {
     errors.push(`${state.month}은 이미 존재합니다. 수정 모드를 사용하세요`);
@@ -208,7 +212,7 @@ export default function EditPage() {
       if (found) return loadFromRecord(found);
     }
     return {
-      month: thisMonthString(),
+      month: lastMonthString(),
       reportedAt: todayString(),
       income: DEFAULT_INCOME,
       expense: DEFAULT_EXPENSE,

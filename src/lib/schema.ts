@@ -8,8 +8,9 @@ const itemSchema = z.object({
 
 const nasdaqMetaSchema = z.object({
   보유: z.number(),
-  수익: z.number(),
-  공제: z.boolean(),
+  실현수익: z.number().optional(),
+  수익: z.number().optional(), // legacy
+  공제: z.boolean().optional(), // legacy
 });
 
 const monthRecordSchema = z.object({

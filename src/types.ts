@@ -3,8 +3,9 @@ export type FlowItem = { name: string; amount: number };
 
 export type NasdaqMeta = {
   보유: number;
-  수익: number;
-  공제: boolean;
+  실현수익?: number; // 올해 매도 실현수익 (만원)
+  수익?: number; // legacy: 미실현수익 (구 청산가치 모델)
+  공제?: boolean; // legacy: 마이그레이션용
 };
 
 export type MonthRecord = {
