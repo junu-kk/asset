@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useData } from '../data/DataContext';
 import KpiHeader from '../components/KpiHeader';
 import AssetTimelineChart from '../components/AssetTimelineChart';
+import CurrencyTimelineChart from '../components/CurrencyTimelineChart';
 import FlowBarChart from '../components/FlowBarChart';
 import SavingsChart from '../components/SavingsChart';
 import { filterByPeriod, type Period } from '../lib/aggregate';
@@ -41,6 +42,7 @@ export default function DashboardPage() {
       </div>
       <KpiHeader records={months} period={period} />
       <AssetTimelineChart records={filtered} />
+      <CurrencyTimelineChart records={filtered} />
       <FlowBarChart records={filtered} />
       <SavingsChart records={filtered} />
     </>

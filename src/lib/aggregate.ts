@@ -4,11 +4,29 @@ export function sumItems(items: (AssetItem | FlowItem)[]): number {
   return items.reduce((acc, x) => acc + x.amount, 0);
 }
 
+// 달러로 표시되는 자산 (환율 변동에 노출된 항목)
+export const USD_ASSET_NAMES = ['달러', '나스닥', '채권'];
+
+// 2025-03까지 '증권'은 나스닥 계좌였다
+const LEGACY_USD_NAME = '증권';
+const LEGACY_USD_UNTIL = '2025-03';
+
+export function isUsdAsset(name: string, month: string): boolean {
+  if (USD_ASSET_NAMES.includes(name)) return true;
+  return name === LEGACY_USD_NAME && month <= LEGACY_USD_UNTIL;
+}
+
+export function allAssets(record: MonthRecord): AssetItem[] {
+  return [...record.assets.cash, ...record.assets.investment];
+}
+
 export type MonthSummary = {
   month: string;
   cashTotal: number;
   investmentTotal: number;
   assetTotal: number;
+  krwTotal: number;
+  usdTotal: number;
   incomeTotal: number;
   expenseTotal: number;
 };
@@ -16,11 +34,16 @@ export type MonthSummary = {
 export function monthSummary(record: MonthRecord): MonthSummary {
   const cashTotal = sumItems(record.assets.cash);
   const investmentTotal = sumItems(record.assets.investment);
+  const items = allAssets(record);
+  const usdTotal = sumItems(items.filter((it) => isUsdAsset(it.name, record.month)));
+  const krwTotal = sumItems(items.filter((it) => !isUsdAsset(it.name, record.month)));
   return {
     month: record.month,
     cashTotal,
     investmentTotal,
     assetTotal: cashTotal + investmentTotal,
+    krwTotal,
+    usdTotal,
     incomeTotal: sumItems(record.income),
     expenseTotal: sumItems(record.expense),
   };
@@ -30,6 +53,8 @@ export type SeriesPoint = {
   month: string;
   cash: number;
   investment: number;
+  krw: number;
+  usd: number;
   total: number;
   income: number;
   expense: number;
@@ -43,6 +68,8 @@ export function buildSeries(records: MonthRecord[]): SeriesPoint[] {
       month: s.month,
       cash: s.cashTotal,
       investment: s.investmentTotal,
+      krw: s.krwTotal,
+      usd: s.usdTotal,
       total: s.assetTotal,
       income: s.incomeTotal,
       expense: s.expenseTotal,
